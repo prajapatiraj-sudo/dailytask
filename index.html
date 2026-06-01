@@ -478,6 +478,78 @@
       padding: 0 18px 18px;
     }
 
+    .alarm-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 18px;
+    }
+
+    .alarm-copy strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .alarm-copy span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .switch {
+      position: relative;
+      width: 54px;
+      height: 30px;
+      display: inline-block;
+    }
+
+    .switch input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #cfd6e1;
+      transition: 160ms ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 3px;
+      top: 3px;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(23, 32, 42, 0.18);
+      transition: 160ms ease;
+    }
+
+    .switch input:checked + .slider {
+      background: var(--green);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .alarm-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      border-top: 1px solid #eef1f5;
+      padding: 12px 18px 18px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
     .admin-item {
       padding: 12px 8px;
     }
@@ -708,6 +780,26 @@
             <strong id="noteOwner">My note</strong>
           </div>
         </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2 class="section-title"><span data-icon="bell"></span>Hourly alarm</h2>
+          </div>
+          <div class="alarm-row">
+            <div class="alarm-copy">
+              <strong id="alarmTitle">Alarm is off</strong>
+              <span id="alarmDescription">Turn it on to play a reminder every hour while this page is open.</span>
+            </div>
+            <label class="switch" title="Toggle hourly alarm">
+              <input id="alarmToggle" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="alarm-footer">
+            <span id="alarmStatus">No alarm scheduled</span>
+            <button class="btn" id="testAlarmBtn" type="button"><span data-icon="volume-2"></span>Test</button>
+          </div>
+        </section>
       </aside>
     </section>
   </main>
@@ -731,6 +823,7 @@
 
     const icons = {
       "badge-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 12 2 2 4-4"/><path d="M3.9 9.6a2 2 0 0 1 0-3.2l1.3-.9.5-1.5a2 2 0 0 1 3-1.1l1.3.8 1.3-.8a2 2 0 0 1 3 1.1l.5 1.5 1.3.9a2 2 0 0 1 0 3.2l-.9.6.9.6a2 2 0 0 1 0 3.2l-1.3.9-.5 1.5a2 2 0 0 1-3 1.1l-1.3-.8-1.3.8a2 2 0 0 1-3-1.1l-.5-1.5-1.3-.9a2 2 0 0 1 0-3.2l.9-.6-.9-.6Z"/></svg>',
+      bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.3 21a2 2 0 0 0 3.4 0"/><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/></svg>',
       "calendar-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/></svg>',
       "clipboard-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>',
       download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>',
@@ -742,10 +835,11 @@
       upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg>',
       "user-plus": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>',
       users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+      "volume-2": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 5 6 9H2v6h4l5 4Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',
       check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 5 5L20 7"/></svg>'
     };
 
-    const state = { data: cloneData(DEFAULT_DATA), today: new Date(), currentUserId: null, authMode: "login" };
+    const state = { data: cloneData(DEFAULT_DATA), today: new Date(), currentUserId: null, authMode: "login", alarmTimer: null, audioContext: null };
     const $ = (selector) => document.querySelector(selector);
     const elements = {
       authView: $("#authView"), appView: $("#appView"), loginTab: $("#loginTab"), registerTab: $("#registerTab"),
@@ -758,7 +852,8 @@
       adminList: $("#adminList"), taskForm: $("#taskForm"), taskTitle: $("#taskTitle"), dayChoices: $("#dayChoices"), repeatField: $("#repeatField"),
       scheduleField: $("#scheduleField"), scheduleDate: $("#scheduleDate"), submitTaskBtn: $("#submitTaskBtn"), formStatus: $("#formStatus"),
       noteText: $("#noteText"), noteStatus: $("#noteStatus"), noteOwner: $("#noteOwner"), backupBtn: $("#backupBtn"), restoreBtn: $("#restoreBtn"),
-      restoreFile: $("#restoreFile"), logoutBtn: $("#logoutBtn")
+      restoreFile: $("#restoreFile"), logoutBtn: $("#logoutBtn"), alarmToggle: $("#alarmToggle"), alarmTitle: $("#alarmTitle"),
+      alarmDescription: $("#alarmDescription"), alarmStatus: $("#alarmStatus"), testAlarmBtn: $("#testAlarmBtn")
     };
 
     function cloneData(data) { return JSON.parse(JSON.stringify(data)); }
@@ -815,6 +910,8 @@
         username: user.username,
         password: user.password,
         role: user.role === "admin" ? "admin" : "user",
+        alarmEnabled: Boolean(user.alarmEnabled),
+        nextAlarmAt: user.nextAlarmAt || "",
         createdAt: user.createdAt || new Date().toISOString()
       })) : cloneData(DEFAULT_DATA.users);
 
@@ -902,7 +999,7 @@
         return;
       }
 
-      const user = { id: `user-${Date.now()}-${Math.random().toString(16).slice(2)}`, name: name || username, username, password, role: "user", createdAt: new Date().toISOString() };
+      const user = { id: `user-${Date.now()}-${Math.random().toString(16).slice(2)}`, name: name || username, username, password, role: "user", alarmEnabled: false, nextAlarmAt: "", createdAt: new Date().toISOString() };
       state.data.users.push(user);
       saveData();
       renderAuthStats();
@@ -914,6 +1011,7 @@
     }
 
     function logout() {
+      stopAlarmTimer();
       state.currentUserId = null;
       localStorage.removeItem(SESSION_KEY);
       elements.appView.classList.add("hide");
@@ -968,6 +1066,7 @@
       elements.noteOwner.textContent = user.role === "admin" ? "Admin note" : "My note";
       renderTasks();
       renderNotes();
+      renderAlarm();
       renderAdmin();
     }
 
@@ -1103,6 +1202,87 @@
       renderAdmin();
     }
 
+    function renderAlarm() {
+      const user = currentUser();
+      const enabled = Boolean(user.alarmEnabled);
+      elements.alarmToggle.checked = enabled;
+      elements.alarmTitle.textContent = enabled ? "Alarm is on" : "Alarm is off";
+      elements.alarmDescription.textContent = enabled
+        ? "A reminder will play every hour while this page stays open."
+        : "Turn it on to play a reminder every hour while this page is open.";
+      elements.alarmStatus.textContent = enabled && user.nextAlarmAt
+        ? `Next alarm: ${new Date(user.nextAlarmAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+        : "No alarm scheduled";
+
+      enabled ? startAlarmTimer() : stopAlarmTimer();
+    }
+
+    function toggleAlarm() {
+      const user = currentUser();
+      user.alarmEnabled = elements.alarmToggle.checked;
+      user.nextAlarmAt = user.alarmEnabled ? new Date(Date.now() + 60 * 60 * 1000).toISOString() : "";
+      saveData();
+      renderAlarm();
+      if (user.alarmEnabled) playAlarm("Hourly alarm enabled.");
+    }
+
+    function startAlarmTimer() {
+      stopAlarmTimer();
+      const user = currentUser();
+      if (!user?.alarmEnabled) return;
+
+      let nextAlarm = user.nextAlarmAt ? new Date(user.nextAlarmAt).getTime() : 0;
+      if (!nextAlarm || Number.isNaN(nextAlarm) || nextAlarm <= Date.now()) {
+        nextAlarm = Date.now() + 60 * 60 * 1000;
+        user.nextAlarmAt = new Date(nextAlarm).toISOString();
+        saveData();
+      }
+
+      const delay = Math.max(1000, Math.min(nextAlarm - Date.now(), 2147483647));
+      state.alarmTimer = window.setTimeout(() => {
+        playAlarm("Hourly work reminder.");
+        const activeUser = currentUser();
+        if (!activeUser?.alarmEnabled) return;
+        activeUser.nextAlarmAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+        saveData();
+        renderAlarm();
+      }, delay);
+    }
+
+    function stopAlarmTimer() {
+      if (state.alarmTimer) {
+        window.clearTimeout(state.alarmTimer);
+        state.alarmTimer = null;
+      }
+    }
+
+    function playAlarm(message = "Hourly work reminder.") {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) {
+        alert(message);
+        return;
+      }
+
+      state.audioContext ||= new AudioContext();
+      if (state.audioContext.state === "suspended") state.audioContext.resume();
+
+      const start = state.audioContext.currentTime;
+      [0, 0.28, 0.56].forEach((offset) => {
+        const oscillator = state.audioContext.createOscillator();
+        const gain = state.audioContext.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(880, start + offset);
+        oscillator.frequency.setValueAtTime(660, start + offset + 0.12);
+        gain.gain.setValueAtTime(0.0001, start + offset);
+        gain.gain.exponentialRampToValueAtTime(0.22, start + offset + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + offset + 0.22);
+        oscillator.connect(gain);
+        gain.connect(state.audioContext.destination);
+        oscillator.start(start + offset);
+        oscillator.stop(start + offset + 0.24);
+      });
+    }
+
     function renderAdmin() {
       elements.adminPanel.classList.toggle("hide", !isAdmin());
       if (!isAdmin()) return;
@@ -1190,6 +1370,8 @@
       elements.taskForm.addEventListener("submit", addTask);
       elements.taskForm.querySelectorAll("input[name='taskType']").forEach((input) => input.addEventListener("change", renderTaskTypeControls));
       elements.noteText.addEventListener("input", saveNote);
+      elements.alarmToggle.addEventListener("change", toggleAlarm);
+      elements.testAlarmBtn.addEventListener("click", () => playAlarm("Test alarm."));
       elements.backupBtn.addEventListener("click", downloadBackup);
       elements.restoreBtn.addEventListener("click", () => elements.restoreFile.click());
       elements.restoreFile.addEventListener("change", (event) => restoreBackup(event.target.files[0]));

@@ -6,6 +6,8 @@
       "username": "admin",
       "password": "admin123",
       "role": "admin",
+      "alarmEnabled": false,
+      "nextAlarmAt": "",
       "createdAt": "2026-06-01T00:00:00.000Z"
     }
   ],
