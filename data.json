@@ -1,12 +1,24 @@
 {
+  "users": [
+    {
+      "id": "admin",
+      "name": "Admin",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "createdAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
   "tasks": [
     {
       "id": "sample-morning-review",
+      "userId": "admin",
       "title": "Morning work review",
       "type": "daily",
       "days": ["mon", "tue", "wed", "thu", "fri", "sat"],
       "createdAt": "2026-06-01T00:00:00.000Z"
     }
   ],
-  "completions": {}
+  "completions": {},
+  "notes": []
 }
