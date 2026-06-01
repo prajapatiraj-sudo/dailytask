@@ -1,0 +1,12 @@
+{
+  "tasks": [
+    {
+      "id": "sample-morning-review",
+      "title": "Morning work review",
+      "type": "daily",
+      "days": ["mon", "tue", "wed", "thu", "fri", "sat"],
+      "createdAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
+  "completions": {}
+}

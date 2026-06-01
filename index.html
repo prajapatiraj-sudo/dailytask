@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daily Work Checklist</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --ink: #1f2933;
+      --muted: #687385;
+      --line: #d9dee7;
+      --green: #1f8f5f;
+      --green-soft: #e9f7ef;
+      --blue: #2563eb;
+      --blue-soft: #edf4ff;
+      --red: #c2413d;
+      --shadow: 0 16px 40px rgba(31, 41, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .title p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn.danger {
+      color: var(--red);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      padding: 18px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .date-pill {
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: #194fb3;
+      padding: 7px 11px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .progress-wrap {
+      padding: 16px 18px 12px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      height: 12px;
+      background: #e8ecf2;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: var(--green);
+      transition: width 160ms ease;
+    }
+
+    .task-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 10px 10px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 40px;
+      gap: 10px;
+      align-items: center;
+      border-radius: 8px;
+      padding: 10px 8px;
+      min-height: 62px;
+    }
+
+    .task + .task {
+      border-top: 1px solid #eef1f5;
+    }
+
+    .check {
+      width: 34px;
+      height: 34px;
+      border: 2px solid #aeb8c7;
+      border-radius: 8px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .task.done .check {
+      border-color: var(--green);
+      background: var(--green);
+      color: #fff;
+    }
+
+    .task-title {
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .task-days {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .task.done .task-title {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--line);
+      color: var(--red);
+      background: #fff7f7;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 30px 18px 34px;
+      text-align: center;
+    }
+
+    .summary-panel {
+      margin-top: 18px;
+    }
+
+    .summary-list {
+      list-style: none;
+      margin: 0;
+      padding: 12px 18px 18px;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 9px 0;
+      border-top: 1px solid #eef1f5;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-list li:first-child {
+      border-top: 0;
+    }
+
+    .summary-list .tick {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .form {
+      padding: 18px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 12px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    input[type="text"]:focus {
+      outline: 3px solid #cfe0ff;
+      border-color: var(--blue);
+    }
+
+    input[type="date"] {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 12px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .task-type {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .type-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .type-choice span {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .type-choice input:checked + span {
+      border-color: var(--blue);
+      color: #194fb3;
+      background: var(--blue-soft);
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .day-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .day-choice span {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .day-choice input:checked + span {
+      border-color: var(--green);
+      color: #11603e;
+      background: var(--green-soft);
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .backup-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .status {
+      min-height: 22px;
+      margin: 12px 0 0;
+      color: var(--green);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .hidden-file {
+      display: none;
+    }
+
+    @media (max-width: 820px) {
+      .topbar,
+      .grid {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .actions {
+        justify-content: stretch;
+      }
+
+      .actions .btn {
+        flex: 1 1 140px;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+        padding-top: 18px;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .days {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="title">
+        <h1>Daily Work Checklist</h1>
+        <p>Monday to Saturday tasks, saved on this browser.</p>
+      </div>
+      <div class="actions">
+        <button class="btn" id="backupBtn" type="button">Download backup</button>
+        <button class="btn" id="restoreBtn" type="button">Restore backup</button>
+        <input class="hidden-file" id="restoreFile" type="file" accept="application/json">
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="panel">
+        <div class="panel-header">
+          <h2 id="listTitle">Today</h2>
+          <span class="date-pill" id="datePill"></span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progressText">0 of 0 done</span>
+            <strong id="progressPercent">0%</strong>
+          </div>
+          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+        </div>
+        <ul class="task-list" id="taskList"></ul>
+        <div class="empty" id="emptyState">No tasks for today. Add one from the side panel.</div>
+
+        <div class="summary-panel">
+          <div class="panel-header">
+            <h2>Today summary</h2>
+          </div>
+          <ul class="summary-list" id="summaryList"></ul>
+          <div class="empty" id="summaryEmpty">No completed tasks yet today.</div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <form class="form" id="taskForm">
+          <div class="field">
+            <label for="taskTitle">Add task</label>
+            <input id="taskTitle" type="text" placeholder="Example: Check client messages" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label>Task type</label>
+            <div class="task-type">
+              <label class="type-choice">
+                <input type="radio" name="taskType" value="daily" checked>
+                <span>Daily</span>
+              </label>
+              <label class="type-choice">
+                <input type="radio" name="taskType" value="scheduled">
+                <span>Scheduled</span>
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Repeat on</label>
+            <div class="days" id="dayChoices"></div>
+          </div>
+          <div class="field hide" id="scheduleField">
+            <label for="scheduleDate">Scheduled date</label>
+            <input id="scheduleDate" type="date">
+          </div>
+          <button class="btn primary" id="submitTaskBtn" type="submit">Add daily task</button>
+          <p class="status" id="formStatus" aria-live="polite"></p>
+          <p class="backup-note">Backup downloads one JSON file with all tasks and check marks. Restore replaces the browser data with that backup.</p>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const STORE_KEY = "daily-work-checklist-v1";
+    const DAY_NAMES = {
+      mon: "Monday",
+      tue: "Tuesday",
+      wed: "Wednesday",
+      thu: "Thursday",
+      fri: "Friday",
+      sat: "Saturday"
+    };
+    const DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat"];
+    const DEFAULT_DATA = {
+      tasks: [
+        {
+          id: "sample-morning-review",
+          title: "Morning work review",
+          type: "daily",
+          days: DAY_ORDER,
+          createdAt: "2026-06-01T00:00:00.000Z"
+        }
+      ],
+      completions: {}
+    };
+
+    const state = {
+      data: cloneData(DEFAULT_DATA),
+      today: new Date()
+    };
+
+    const elements = {
+      listTitle: document.querySelector("#listTitle"),
+      datePill: document.querySelector("#datePill"),
+      progressText: document.querySelector("#progressText"),
+      progressPercent: document.querySelector("#progressPercent"),
+      progressBar: document.querySelector("#progressBar"),
+      taskList: document.querySelector("#taskList"),
+      emptyState: document.querySelector("#emptyState"),
+      summaryList: document.querySelector("#summaryList"),
+      summaryEmpty: document.querySelector("#summaryEmpty"),
+      taskForm: document.querySelector("#taskForm"),
+      taskTitle: document.querySelector("#taskTitle"),
+      dayChoices: document.querySelector("#dayChoices"),
+      scheduleField: document.querySelector("#scheduleField"),
+      scheduleDate: document.querySelector("#scheduleDate"),
+      submitTaskBtn: document.querySelector("#submitTaskBtn"),
+      formStatus: document.querySelector("#formStatus"),
+      backupBtn: document.querySelector("#backupBtn"),
+      restoreBtn: document.querySelector("#restoreBtn"),
+      restoreFile: document.querySelector("#restoreFile")
+    };
+
+    function cloneData(data) {
+      return JSON.parse(JSON.stringify(data));
+    }
+
+    async function loadData() {
+      const saved = localStorage.getItem(STORE_KEY);
+      if (!saved) {
+        return loadSeedData();
+      }
+
+      try {
+        const parsed = JSON.parse(saved);
+        return normalizeData(parsed);
+      } catch (error) {
+        return loadSeedData();
+      }
+    }
+
+    async function loadSeedData() {
+      try {
+        const response = await fetch("data.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("Seed file not available");
+        return normalizeData(await response.json());
+      } catch (error) {
+        return cloneData(DEFAULT_DATA);
+      }
+    }
+
+    function normalizeData(data) {
+      return {
+        tasks: Array.isArray(data.tasks) ? data.tasks.filter(isValidTask).map(normalizeTask) : [],
+        completions: data.completions && typeof data.completions === "object" ? data.completions : {}
+      };
+    }
+
+    function isValidTask(task) {
+      if (!task || typeof task.title !== "string") return false;
+      if (task.type === "scheduled") return typeof task.scheduleDate === "string";
+      return Array.isArray(task.days);
+    }
+
+    function normalizeTask(task) {
+      if (task.type === "scheduled") {
+        return {
+          ...task,
+          type: "scheduled",
+          days: [],
+          scheduleDate: task.scheduleDate
+        };
+      }
+
+      return {
+        ...task,
+        type: "daily",
+        days: Array.isArray(task.days) ? task.days.filter((day) => DAY_ORDER.includes(day)) : DAY_ORDER
+      };
+    }
+
+    function saveData() {
+      localStorage.setItem(STORE_KEY, JSON.stringify(state.data));
+    }
+
+    function todayKey() {
+      const year = state.today.getFullYear();
+      const month = String(state.today.getMonth() + 1).padStart(2, "0");
+      const day = String(state.today.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function currentDayKey() {
+      const day = state.today.getDay();
+      return [null, "mon", "tue", "wed", "thu", "fri", "sat"][day] || "sun";
+    }
+
+    function formatDate() {
+      return state.today.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function renderDayChoices() {
+      elements.dayChoices.innerHTML = "";
+
+      DAY_ORDER.forEach((day) => {
+        const label = document.createElement("label");
+        label.className = "day-choice";
+        label.innerHTML = `
+          <input type="checkbox" name="days" value="${day}" checked>
+          <span>${day.toUpperCase()}</span>
+        `;
+        elements.dayChoices.appendChild(label);
+      });
+    }
+
+    function setDefaultScheduleDate() {
+      elements.scheduleDate.value = todayKey();
+    }
+
+    function renderTaskTypeControls() {
+      const taskType = getTaskType();
+      const isScheduled = taskType === "scheduled";
+
+      elements.dayChoices.closest(".field").classList.toggle("hide", isScheduled);
+      elements.scheduleField.classList.toggle("hide", !isScheduled);
+      elements.submitTaskBtn.textContent = isScheduled ? "Add scheduled task" : "Add daily task";
+
+      if (isScheduled && !elements.scheduleDate.value) {
+        setDefaultScheduleDate();
+      }
+    }
+
+    function getTaskType() {
+      return elements.taskForm.querySelector("input[name='taskType']:checked").value;
+    }
+
+    function getTasksForToday(dayKey, dateKey) {
+      return state.data.tasks.filter((task) => {
+        if (task.type === "scheduled") return task.scheduleDate === dateKey;
+        return task.days.includes(dayKey);
+      });
+    }
+
+    function getTaskScheduleText(task) {
+      if (task.type === "scheduled") return `Scheduled: ${task.scheduleDate}`;
+      return task.days.map((day) => DAY_NAMES[day].slice(0, 3)).join(", ");
+    }
+
+    function render() {
+      const dateKey = todayKey();
+      const dayKey = currentDayKey();
+      const todayTasks = getTasksForToday(dayKey, dateKey);
+      const doneSet = new Set(state.data.completions[dateKey] || []);
+      const doneCount = todayTasks.filter((task) => doneSet.has(task.id)).length;
+      const percent = todayTasks.length ? Math.round((doneCount / todayTasks.length) * 100) : 0;
+
+      elements.listTitle.textContent = dayKey === "sun" ? "Sunday scheduled work" : `${DAY_NAMES[dayKey]} work`;
+      elements.datePill.textContent = formatDate();
+      elements.progressText.textContent = `${doneCount} of ${todayTasks.length} done`;
+      elements.progressPercent.textContent = `${percent}%`;
+      elements.progressBar.style.width = `${percent}%`;
+      elements.emptyState.hidden = todayTasks.length > 0;
+      elements.taskList.innerHTML = "";
+      elements.summaryList.innerHTML = "";
+
+      todayTasks.forEach((task) => {
+        const item = document.createElement("li");
+        item.className = `task${doneSet.has(task.id) ? " done" : ""}`;
+        item.innerHTML = `
+          <button class="check" type="button" aria-label="Mark ${escapeHtml(task.title)} done">✓</button>
+          <div>
+            <div class="task-title"></div>
+            <div class="task-days"></div>
+          </div>
+          <button class="icon-btn" type="button" title="Delete task" aria-label="Delete task">×</button>
+        `;
+
+        item.querySelector(".task-title").textContent = task.title;
+        item.querySelector(".task-days").textContent = getTaskScheduleText(task);
+        item.querySelector(".check").addEventListener("click", () => toggleDone(task.id));
+        item.querySelector(".icon-btn").addEventListener("click", () => deleteTask(task.id));
+        elements.taskList.appendChild(item);
+      });
+
+      const completedTasks = todayTasks.filter((task) => doneSet.has(task.id));
+      elements.summaryEmpty.hidden = completedTasks.length > 0;
+
+      completedTasks.forEach((task) => {
+        const item = document.createElement("li");
+        const tick = document.createElement("span");
+        const text = document.createElement("span");
+
+        tick.className = "tick";
+        tick.textContent = "✓";
+        text.textContent = task.title;
+        item.append(tick, text);
+        elements.summaryList.appendChild(item);
+      });
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function toggleDone(taskId) {
+      const dateKey = todayKey();
+      const done = new Set(state.data.completions[dateKey] || []);
+
+      if (done.has(taskId)) {
+        done.delete(taskId);
+      } else {
+        done.add(taskId);
+      }
+
+      state.data.completions[dateKey] = Array.from(done);
+      saveData();
+      render();
+    }
+
+    function deleteTask(taskId) {
+      const task = state.data.tasks.find((item) => item.id === taskId);
+      if (!task || !confirm(`Delete "${task.title}"?`)) return;
+
+      state.data.tasks = state.data.tasks.filter((item) => item.id !== taskId);
+      Object.keys(state.data.completions).forEach((dateKey) => {
+        state.data.completions[dateKey] = state.data.completions[dateKey].filter((id) => id !== taskId);
+      });
+      saveData();
+      render();
+    }
+
+    function addTask(event) {
+      event.preventDefault();
+
+      const title = elements.taskTitle.value.trim();
+      const taskType = getTaskType();
+      const days = Array.from(elements.taskForm.querySelectorAll("input[name='days']:checked")).map((input) => input.value);
+      const scheduleDate = elements.scheduleDate.value;
+
+      if (!title) {
+        showStatus("Please enter a task name.", true);
+        elements.taskTitle.focus();
+        return;
+      }
+
+      if (taskType === "daily" && days.length === 0) {
+        showStatus("Please choose at least one day.", true);
+        return;
+      }
+
+      const task = {
+        id: `task-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        title,
+        createdAt: new Date().toISOString()
+      };
+
+      if (taskType === "scheduled") {
+        if (!scheduleDate) {
+          showStatus("Please choose a scheduled date.", true);
+          return;
+        }
+
+        state.data.tasks.push({
+          ...task,
+          type: "scheduled",
+          days: [],
+          scheduleDate
+        });
+      } else {
+        state.data.tasks.push({
+          ...task,
+          type: "daily",
+          days
+        });
+      }
+
+      elements.taskForm.reset();
+      elements.taskForm.querySelectorAll("input[name='days']").forEach((input) => {
+        input.checked = true;
+      });
+      elements.taskForm.querySelector("input[name='taskType'][value='daily']").checked = true;
+      setDefaultScheduleDate();
+      renderTaskTypeControls();
+      saveData();
+      render();
+      showStatus(taskType === "scheduled" ? "Scheduled task added." : "Task added.");
+    }
+
+    function showStatus(message, isError = false) {
+      elements.formStatus.textContent = message;
+      elements.formStatus.style.color = isError ? "var(--red)" : "var(--green)";
+
+      window.clearTimeout(showStatus.timer);
+      showStatus.timer = window.setTimeout(() => {
+        elements.formStatus.textContent = "";
+      }, 2200);
+    }
+
+    function downloadBackup() {
+      const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `daily-work-backup-${todayKey()}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function restoreBackup(file) {
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          state.data = normalizeData(JSON.parse(reader.result));
+          saveData();
+          render();
+          alert("Backup restored.");
+        } catch (error) {
+          alert("This backup file is not valid JSON.");
+        }
+      };
+      reader.readAsText(file);
+      elements.restoreFile.value = "";
+    }
+
+    async function init() {
+      state.data = await loadData();
+      saveData();
+      renderDayChoices();
+      setDefaultScheduleDate();
+      renderTaskTypeControls();
+      render();
+
+      elements.taskForm.addEventListener("submit", addTask);
+      elements.taskForm.querySelectorAll("input[name='taskType']").forEach((input) => {
+        input.addEventListener("change", renderTaskTypeControls);
+      });
+      elements.backupBtn.addEventListener("click", downloadBackup);
+      elements.restoreBtn.addEventListener("click", () => elements.restoreFile.click());
+      elements.restoreFile.addEventListener("change", (event) => restoreBackup(event.target.files[0]));
+    }
+
+    init();
+  </script>
+</body>
+</html>
