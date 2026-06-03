@@ -4,101 +4,135 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daily Task Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f6f8;
+      --bg: #f0f4f8;
       --surface: #ffffff;
-      --surface-2: #f9fafb;
-      --ink: #17202a;
-      --muted: #667085;
-      --line: #d8dee8;
-      --blue: #2157d6;
-      --blue-soft: #eaf1ff;
-      --green: #188557;
-      --green-soft: #e8f7ef;
-      --red: #c43d3d;
-      --amber: #a15c00;
-      --shadow: 0 18px 45px rgba(23, 32, 42, 0.08);
+      --surface-2: #f8fafc;
+      --surface-3: #f1f5f9;
+      --ink: #0f172a;
+      --ink-2: #1e293b;
+      --muted: #64748b;
+      --muted-2: #94a3b8;
+      --line: #e2e8f0;
+      --line-2: #cbd5e1;
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --blue-mid: #bfdbfe;
+      --green: #16a34a;
+      --green-soft: #f0fdf4;
+      --green-mid: #bbf7d0;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --shadow-xs: 0 1px 2px rgba(15,23,42,.06);
+      --shadow-sm: 0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.04);
+      --shadow: 0 4px 6px rgba(15,23,42,.04), 0 10px 20px rgba(15,23,42,.07);
+      --shadow-lg: 0 24px 48px rgba(15,23,42,.16), 0 8px 16px rgba(15,23,42,.08);
+      --r: 14px;
+      --r-sm: 10px;
+      --r-xs: 7px;
+      --transition: 150ms cubic-bezier(0.4,0,0.2,1);
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
       background: var(--bg);
+      background-image: radial-gradient(circle at 1px 1px, #c8d6e8 1px, transparent 0);
+      background-size: 28px 28px;
       color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-feature-settings: 'cv11','ss01';
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
     }
 
-    button, input, textarea { font: inherit; }
+    button, input, textarea, select { font: inherit; }
     button { cursor: pointer; }
 
+    /* ── App shell ──────────────────────────────────────── */
     .app {
-      width: min(1240px, calc(100% - 32px));
+      width: min(1280px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 24px 0 44px;
+      padding: 28px 0 60px;
     }
 
+    /* ── Auth ──────────────────────────────────────────── */
     .auth-wrap {
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 28px 16px;
+      padding: 32px 16px;
     }
 
     .auth-card {
-      width: min(940px, 100%);
+      width: min(1000px, 100%);
       display: grid;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 420px;
       background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+      border-radius: var(--r);
+      box-shadow: var(--shadow-lg);
       overflow: hidden;
     }
 
     .auth-intro {
-      padding: 38px;
-      background: #17202a;
+      padding: 48px;
+      background: #0f172a;
+      background-image:
+        radial-gradient(ellipse 90% 55% at 60% 110%, rgba(37,99,235,.28) 0%, transparent 70%),
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,.045) 1px, transparent 0);
+      background-size: 100% 100%, 22px 22px;
       color: #fff;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 38px;
+      gap: 48px;
     }
 
     .brand {
       display: flex;
       gap: 12px;
       align-items: center;
-      font-weight: 900;
-      font-size: 1.15rem;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
     }
 
     .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
-      background: #ffffff;
-      color: var(--blue);
+      background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%);
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(37,99,235,.5);
     }
+
+    .brand-mark svg { width: 18px; height: 18px; stroke-width: 2.2; }
 
     .auth-intro h1 {
       margin: 0;
-      max-width: 520px;
-      font-size: clamp(2rem, 5vw, 4rem);
-      line-height: 1.02;
-      letter-spacing: 0;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      font-weight: 800;
     }
 
     .auth-intro p {
-      margin: 14px 0 0;
-      max-width: 560px;
-      color: #cbd5e1;
-      line-height: 1.6;
+      margin: 16px 0 0;
+      color: #64748b;
+      line-height: 1.7;
+      font-size: 0.97rem;
     }
 
     .auth-meta {
@@ -108,152 +142,253 @@
     }
 
     .metric {
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 8px;
-      padding: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r-sm);
+      padding: 16px 14px;
+      background: rgba(255,255,255,.04);
     }
 
     .metric strong {
       display: block;
-      font-size: 1.35rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
     }
 
     .metric span {
-      color: #cbd5e1;
-      font-size: 0.86rem;
+      color: #475569;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
 
     .auth-panel {
-      padding: 28px;
+      padding: 48px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .auth-heading {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin: 0 0 4px;
+      color: var(--ink);
+    }
+
+    .auth-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0 0 28px;
+      font-weight: 500;
     }
 
     .tabs {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 20px;
+      background: var(--surface-3);
+      border-radius: var(--r-sm);
+      padding: 4px;
+      gap: 0;
+      margin-bottom: 24px;
     }
 
     .tab {
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--surface);
+      min-height: 38px;
+      border: none;
+      border-radius: var(--r-xs);
+      background: transparent;
       color: var(--muted);
-      font-weight: 850;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: all var(--transition);
     }
 
     .tab.active {
-      color: #194fb3;
-      background: var(--blue-soft);
-      border-color: #b7cbff;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-xs), 0 1px 3px rgba(15,23,42,.1);
     }
 
+    /* ── Sticky Navbar ───────────────────────────────────── */
     .topbar {
       display: flex;
       justify-content: space-between;
-      gap: 18px;
-      align-items: flex-start;
-      margin-bottom: 18px;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(226,232,240,.8);
+      border-radius: var(--r);
+      padding: 10px 16px 10px 14px;
+      position: sticky;
+      top: 16px;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
     }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%);
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    }
+
+    .topbar-mark svg { width: 16px; height: 16px; stroke-width: 2.2; }
 
     .title h1 {
       margin: 0;
-      font-size: clamp(1.8rem, 3vw, 2.7rem);
-      line-height: 1.06;
-      letter-spacing: 0;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--ink);
     }
 
     .title p {
-      margin: 8px 0 0;
+      margin: 1px 0 0;
       color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 500;
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 6px;
+      align-items: center;
     }
 
+    /* ── Buttons ─────────────────────────────────────────── */
     .btn {
-      min-height: 42px;
+      min-height: 36px;
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: var(--r-sm);
       background: var(--surface);
-      color: var(--ink);
-      padding: 0 14px;
+      color: var(--ink-2);
+      padding: 0 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-weight: 800;
+      gap: 7px;
+      font-weight: 600;
+      font-size: 0.84rem;
       white-space: nowrap;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-xs);
+      text-decoration: none;
     }
 
-    .btn svg, .brand-mark svg, .section-title svg, .mini-icon svg {
-      width: 18px;
-      height: 18px;
-      stroke-width: 2.2;
+    .btn:hover {
+      border-color: var(--line-2);
+      background: var(--surface-2);
+      box-shadow: var(--shadow-sm);
     }
+
+    .btn:active { transform: translateY(1px); box-shadow: none; }
+
+    .btn svg { width: 15px; height: 15px; stroke-width: 2; flex-shrink: 0; }
 
     .btn.primary {
       border-color: var(--blue);
       background: var(--blue);
       color: #fff;
+      box-shadow: 0 1px 3px rgba(37,99,235,.35), 0 4px 10px rgba(37,99,235,.2);
     }
 
-    .btn.danger {
-      color: var(--red);
+    .btn.primary:hover {
+      background: var(--blue-dark);
+      border-color: var(--blue-dark);
+      box-shadow: 0 2px 4px rgba(37,99,235,.4), 0 6px 14px rgba(37,99,235,.25);
     }
 
+    .btn.danger { color: var(--red); }
+    .btn.danger:hover { background: var(--red-soft); border-color: #fca5a5; color: var(--red); }
+
+    .btn-full { width: 100%; min-height: 44px; font-size: 0.92rem; border-radius: var(--r-sm); }
+
+    /* ── Layout ─────────────────────────────────────────── */
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      gap: 18px;
+      grid-template-columns: minmax(0,1fr) 372px;
+      gap: 20px;
       align-items: start;
     }
 
-    .stack {
-      display: grid;
-      gap: 18px;
-    }
+    .stack { display: grid; gap: 20px; }
 
+    /* ── Panel ─────────────────────────────────────────── */
     .panel {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: var(--r);
       box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
     .panel-header {
-      padding: 18px 18px 0;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       gap: 14px;
       align-items: center;
+      border-bottom: 1px solid var(--line);
     }
 
     .section-title {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
       margin: 0;
-      font-size: 1.08rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink-2);
     }
+
+    .s-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .s-icon svg { width: 14px; height: 14px; stroke-width: 2.2; }
 
     .pill {
       border-radius: 999px;
-      background: var(--blue-soft);
-      color: #194fb3;
-      padding: 7px 11px;
-      font-size: 0.85rem;
-      font-weight: 850;
+      background: var(--surface-3);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 3px 11px;
+      font-size: 0.78rem;
+      font-weight: 600;
       white-space: nowrap;
     }
 
+    /* ── Progress ─────────────────────────────────────── */
     .progress-wrap {
-      padding: 16px 18px 12px;
+      padding: 14px 20px 16px;
     }
 
     .progress-meta {
@@ -261,13 +396,19 @@
       justify-content: space-between;
       gap: 12px;
       color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 8px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      margin-bottom: 9px;
+    }
+
+    .progress-meta strong {
+      color: var(--ink);
+      font-weight: 700;
     }
 
     .progress {
-      height: 12px;
-      background: #e8ecf2;
+      height: 7px;
+      background: var(--surface-3);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -276,283 +417,347 @@
       display: block;
       width: 0%;
       height: 100%;
-      background: var(--green);
-      transition: width 160ms ease;
+      background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);
+      border-radius: 999px;
+      transition: width 350ms cubic-bezier(0.4,0,0.2,1);
     }
 
+    /* ── Task list ─────────────────────────────────────── */
     .task-list, .summary-list, .admin-list {
       list-style: none;
       margin: 0;
-      padding: 10px;
+      padding: 6px 8px;
     }
 
     .task {
       display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) 38px;
-      gap: 10px;
+      grid-template-columns: 38px minmax(0,1fr) 34px;
+      gap: 12px;
       align-items: center;
-      border-radius: 8px;
-      padding: 10px 8px;
-      min-height: 62px;
+      border-radius: var(--r-sm);
+      padding: 10px 10px 10px 0;
+      min-height: 58px;
+      border-left: 3px solid transparent;
+      padding-left: 8px;
+      transition: background var(--transition), border-color var(--transition);
+      cursor: default;
     }
 
-    .task + .task, .summary-list li + li, .admin-item + .admin-item {
-      border-top: 1px solid #eef1f5;
-    }
+    .task:hover { background: var(--surface-2); border-left-color: var(--line-2); }
+    .task + .task { border-top: 1px solid var(--surface-3); }
+    .task.done { border-left-color: var(--green); }
+    .task.done:hover { border-left-color: var(--green); }
 
     .check {
-      width: 34px;
-      height: 34px;
-      border: 2px solid #aeb8c7;
-      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--line-2);
+      border-radius: 999px;
       background: #fff;
       display: grid;
       place-items: center;
       color: transparent;
+      transition: all var(--transition);
+      flex-shrink: 0;
     }
 
-    .task.done .check {
-      border-color: var(--green);
-      background: var(--green);
-      color: #fff;
-    }
+    .check svg { width: 14px; height: 14px; stroke-width: 2.5; }
+    .check:hover { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+    .task.done .check { border-color: var(--green); background: var(--green); color: #fff; }
 
     .task-title {
-      font-weight: 850;
+      font-weight: 600;
+      font-size: 0.9rem;
       overflow-wrap: anywhere;
+      color: var(--ink);
+      line-height: 1.35;
     }
 
     .task-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 0.84rem;
+      gap: 5px;
+      margin-top: 4px;
+      color: var(--muted-2);
+      font-size: 0.76rem;
+      font-weight: 500;
     }
 
     .task.done .task-title {
       color: var(--muted);
       text-decoration: line-through;
+      text-decoration-color: var(--muted-2);
     }
 
     .icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: var(--r-xs);
       border: 1px solid transparent;
       background: transparent;
-      color: var(--muted);
+      color: var(--muted-2);
       display: grid;
       place-items: center;
+      transition: all var(--transition);
     }
 
-    .icon-btn:hover {
-      border-color: var(--line);
-      color: var(--red);
-      background: #fff7f7;
-    }
+    .icon-btn svg { width: 14px; height: 14px; stroke-width: 2; }
+    .icon-btn:hover { border-color: #fca5a5; color: var(--red); background: var(--red-soft); }
 
     .empty {
       color: var(--muted);
-      padding: 28px 18px 32px;
+      padding: 38px 20px 44px;
       text-align: center;
+      font-size: 0.88rem;
+      font-weight: 500;
     }
 
+    /* ── Summary ─────────────────────────────────────── */
     .summary-list li {
       display: grid;
-      grid-template-columns: 28px minmax(0, 1fr);
-      gap: 10px;
+      grid-template-columns: 24px minmax(0,1fr);
+      gap: 12px;
       align-items: start;
-      padding: 10px 8px;
-      font-weight: 800;
+      padding: 9px 10px;
+      font-size: 0.87rem;
+      font-weight: 600;
       overflow-wrap: anywhere;
+      border-radius: var(--r-xs);
     }
 
+    .summary-list li + li { border-top: 1px solid var(--surface-3); }
+
     .tick {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       background: var(--green-soft);
       color: var(--green);
       display: grid;
       place-items: center;
+      flex-shrink: 0;
     }
 
-    .form {
-      padding: 18px;
-    }
+    .tick svg { width: 12px; height: 12px; stroke-width: 2.5; }
+
+    /* ── Form ─────────────────────────────────────────── */
+    .form { padding: 20px; }
 
     .field {
       display: grid;
-      gap: 8px;
-      margin-bottom: 15px;
+      gap: 6px;
+      margin-bottom: 16px;
     }
 
     label {
-      font-weight: 850;
-      font-size: 0.92rem;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--ink-2);
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
     }
 
-    input, textarea {
+    input, textarea, select {
       width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-sm);
       color: var(--ink);
-      background: #fff;
+      background: var(--surface);
+      transition: border-color var(--transition), box-shadow var(--transition);
     }
 
-    input {
-      min-height: 44px;
+    input, select {
+      min-height: 42px;
       padding: 0 12px;
+      font-size: 0.88rem;
     }
 
     textarea {
-      min-height: 170px;
+      min-height: 158px;
       resize: vertical;
       padding: 12px;
-      line-height: 1.5;
+      line-height: 1.6;
+      font-size: 0.88rem;
     }
 
-    input:focus, textarea:focus {
-      outline: 3px solid #cfe0ff;
+    input:focus, textarea:focus, select:focus {
+      outline: none;
       border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
     }
 
-    .segmented, .days {
-      display: grid;
-      gap: 8px;
-    }
+    input::placeholder, textarea::placeholder { color: var(--muted-2); }
 
     .segmented {
+      display: grid;
       grid-template-columns: 1fr 1fr;
+      background: var(--surface-3);
+      border-radius: var(--r-sm);
+      padding: 4px;
+      gap: 0;
     }
 
     .days {
-      grid-template-columns: repeat(3, 1fr);
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 6px;
     }
+
+    .choice { position: relative; }
 
     .choice input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
+      width: auto;
+      min-height: auto;
+      border: none;
     }
 
-    .choice span {
-      min-height: 40px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
+    .segmented .choice span {
+      min-height: 36px;
+      border: none;
+      border-radius: var(--r-xs);
       display: grid;
       place-items: center;
-      font-weight: 850;
+      font-weight: 600;
+      font-size: 0.86rem;
       color: var(--muted);
-      background: #fff;
+      background: transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-transform: none;
+      letter-spacing: 0;
     }
 
-    .choice input:checked + span {
-      border-color: var(--blue);
-      color: #194fb3;
-      background: var(--blue-soft);
+    .segmented .choice input:checked + span {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-xs), 0 1px 3px rgba(15,23,42,.1);
+    }
+
+    .days .choice span {
+      min-height: 36px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--r-xs);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.76rem;
+      color: var(--muted);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .days .choice input:checked + span {
       border-color: var(--green);
-      color: #11603e;
+      color: #15803d;
       background: var(--green-soft);
     }
 
     .status {
-      min-height: 22px;
-      margin: 12px 0 0;
-      color: var(--green);
-      font-size: 0.9rem;
-      font-weight: 850;
+      min-height: 20px;
+      margin: 10px 0 0;
+      font-size: 0.84rem;
+      font-weight: 600;
     }
 
+    /* ── Notes ─────────────────────────────────────────── */
     .note-footer {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      color: var(--muted);
-      font-size: 0.86rem;
-      padding: 0 18px 18px;
+      color: var(--muted-2);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 10px 20px 16px;
+      border-top: 1px solid var(--surface-3);
     }
 
+    /* ── Alarm ─────────────────────────────────────────── */
     .alarm-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 12px;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 16px;
       align-items: center;
-      padding: 18px;
+      padding: 18px 20px;
     }
 
     .alarm-copy strong {
       display: block;
+      font-weight: 700;
+      font-size: 0.9rem;
       margin-bottom: 4px;
     }
 
     .alarm-copy span {
       color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.45;
+      font-size: 0.83rem;
+      line-height: 1.5;
     }
 
     .switch {
       position: relative;
-      width: 54px;
-      height: 30px;
+      width: 50px;
+      height: 27px;
       display: inline-block;
+      flex-shrink: 0;
     }
 
     .switch input {
       position: absolute;
       opacity: 0;
       pointer-events: none;
+      width: auto;
+      min-height: auto;
+      border: none;
     }
 
     .slider {
       position: absolute;
       inset: 0;
       border-radius: 999px;
-      background: #cfd6e1;
-      transition: 160ms ease;
+      background: var(--line-2);
+      transition: 200ms ease;
     }
 
     .slider::before {
       content: "";
       position: absolute;
-      width: 24px;
-      height: 24px;
+      width: 21px;
+      height: 21px;
       left: 3px;
       top: 3px;
       border-radius: 999px;
       background: #fff;
-      box-shadow: 0 2px 8px rgba(23, 32, 42, 0.18);
-      transition: 160ms ease;
+      box-shadow: 0 2px 5px rgba(15,23,42,.22);
+      transition: 200ms ease;
     }
 
-    .switch input:checked + .slider {
-      background: var(--green);
-    }
-
-    .switch input:checked + .slider::before {
-      transform: translateX(24px);
-    }
+    .switch input:checked + .slider { background: var(--green); }
+    .switch input:checked + .slider::before { transform: translateX(23px); }
 
     .alarm-footer {
       display: flex;
       justify-content: space-between;
       gap: 12px;
       align-items: center;
-      border-top: 1px solid #eef1f5;
-      padding: 12px 18px 18px;
+      border-top: 1px solid var(--line);
+      padding: 12px 20px 16px;
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: 0.83rem;
+      font-weight: 500;
     }
 
+    /* ── Admin ─────────────────────────────────────────── */
     .admin-item {
-      padding: 12px 8px;
+      padding: 16px 14px;
     }
+
+    .admin-item + .admin-item { border-top: 1px solid var(--surface-3); }
 
     .admin-row {
       display: flex;
@@ -561,74 +766,139 @@
       align-items: flex-start;
     }
 
+    .admin-user-info {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.78rem;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: 0.04em;
+    }
+
     .admin-name {
-      font-weight: 900;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink);
+      line-height: 1.3;
     }
 
     .admin-meta {
       color: var(--muted);
-      font-size: 0.86rem;
-      margin-top: 4px;
+      font-size: 0.8rem;
+      margin-top: 3px;
+      font-weight: 500;
     }
 
     .admin-note {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 8px;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--r-xs);
       background: var(--surface-2);
-      color: #344054;
+      border: 1px solid var(--line);
+      color: var(--ink-2);
       white-space: pre-wrap;
       overflow-wrap: anywhere;
+      font-size: 0.85rem;
+      line-height: 1.6;
     }
 
-    .hidden-file, .hide {
-      display: none !important;
+    .admin-tasks {
+      display: grid;
+      gap: 6px;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
     }
 
-    @media (max-width: 900px) {
-      .auth-card, .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .auth-meta {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        display: grid;
-      }
-
-      .actions {
-        justify-content: stretch;
-      }
-
-      .actions .btn {
-        flex: 1 1 150px;
-      }
+    .admin-task {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-xs);
+      background: var(--surface-2);
     }
 
-    @media (max-width: 480px) {
-      .app {
-        width: min(100% - 20px, 1240px);
-        padding-top: 16px;
-      }
+    .admin-task-title {
+      font-weight: 600;
+      font-size: 0.86rem;
+      overflow-wrap: anywhere;
+      color: var(--ink-2);
+    }
 
-      .auth-intro, .auth-panel {
-        padding: 22px;
-      }
+    .admin-task-meta {
+      margin-top: 3px;
+      color: var(--muted-2);
+      font-size: 0.77rem;
+      font-weight: 500;
+    }
 
-      .panel-header, .admin-row {
-        align-items: flex-start;
-        flex-direction: column;
-      }
+    .status-pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
 
-      .days {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .status-pill.done {
+      background: var(--green-soft);
+      color: #15803d;
+      border: 1px solid var(--green-mid);
+    }
+
+    .status-pill.pending {
+      background: var(--amber-soft);
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .admin-item .pill {
+      background: var(--surface-3);
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    /* ── Utilities ─────────────────────────────────────── */
+    .hidden-file, .hide { display: none !important; }
+
+    /* ── Responsive ─────────────────────────────────────── */
+    @media (max-width: 980px) {
+      .auth-card, .layout { grid-template-columns: 1fr; }
+      .topbar { position: relative; top: 0; }
+      .actions { justify-content: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .app { width: calc(100% - 24px); padding: 16px 0 40px; }
+      .auth-intro { padding: 32px 28px; }
+      .auth-panel { padding: 32px 28px; }
+      .auth-meta { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .topbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .actions { width: 100%; }
+      .actions .btn { flex: 1 1 120px; }
+      .admin-task { grid-template-columns: minmax(0,1fr); }
+      .days { grid-template-columns: repeat(2,1fr); }
     }
   </style>
 </head>
 <body>
+
+  <!-- ── Auth ─────────────────────────────────────────── -->
   <div id="authView" class="auth-wrap">
     <section class="auth-card">
       <div class="auth-intro">
@@ -638,61 +908,75 @@
         </div>
         <div>
           <h1>Track daily work by user.</h1>
-          <p>Each user can manage only their own task list and notes. Admin can review every user's work for the day.</p>
+          <p>Each user manages their own task list and notes. Admin can review every user's progress in real time.</p>
         </div>
         <div class="auth-meta">
-          <div class="metric"><strong id="authUserCount">1</strong><span>users</span></div>
-          <div class="metric"><strong id="authTaskCount">0</strong><span>tasks</span></div>
-          <div class="metric"><strong>Admin</strong><span>overview ready</span></div>
+          <div class="metric"><strong id="authUserCount">1</strong><span>Users</span></div>
+          <div class="metric"><strong id="authTaskCount">0</strong><span>Tasks</span></div>
+          <div class="metric"><strong>Admin</strong><span>Overview</span></div>
         </div>
       </div>
 
       <div class="auth-panel">
+        <h2 class="auth-heading">Welcome back</h2>
+        <p class="auth-sub">Sign in to your account or create a new one.</p>
+
         <div class="tabs">
-          <button class="tab active" id="loginTab" type="button">Login</button>
-          <button class="tab" id="registerTab" type="button">Create user</button>
+          <button class="tab active" id="loginTab" type="button">Sign in</button>
+          <button class="tab" id="registerTab" type="button">Create account</button>
         </div>
 
         <form id="loginForm">
           <div class="field">
             <label for="loginUsername">Username</label>
-            <input id="loginUsername" autocomplete="username" required>
+            <input id="loginUsername" placeholder="Enter your username" autocomplete="username" required>
           </div>
           <div class="field">
             <label for="loginPassword">Password</label>
-            <input id="loginPassword" type="password" autocomplete="current-password" required>
+            <input id="loginPassword" type="password" placeholder="Enter your password" autocomplete="current-password" required>
           </div>
-          <button class="btn primary" type="submit"><span data-icon="log-in"></span>Login</button>
+          <button class="btn primary btn-full" type="submit"><span data-icon="log-in"></span>Sign in</button>
           <p class="status" id="loginStatus" aria-live="polite"></p>
         </form>
 
         <form id="registerForm" class="hide">
           <div class="field">
-            <label for="registerName">Name</label>
-            <input id="registerName" autocomplete="name" required>
+            <label for="registerName">Full name</label>
+            <input id="registerName" placeholder="Your display name" autocomplete="name" required>
           </div>
           <div class="field">
             <label for="registerUsername">Username</label>
-            <input id="registerUsername" autocomplete="username" required>
+            <input id="registerUsername" placeholder="min. 3 characters" autocomplete="username" required>
           </div>
           <div class="field">
             <label for="registerPassword">Password</label>
-            <input id="registerPassword" type="password" autocomplete="new-password" required>
+            <input id="registerPassword" type="password" placeholder="min. 4 characters" autocomplete="new-password" required>
           </div>
-          <button class="btn primary" type="submit"><span data-icon="user-plus"></span>Create user</button>
+          <button class="btn primary btn-full" type="submit"><span data-icon="user-plus"></span>Create account</button>
           <p class="status" id="registerStatus" aria-live="polite"></p>
         </form>
       </div>
     </section>
   </div>
 
+  <!-- ── App ──────────────────────────────────────────── -->
   <main class="app hide" id="appView">
+
+    <!-- Navbar -->
     <header class="topbar">
-      <div class="title">
-        <h1>Daily Task Desk</h1>
-        <p id="welcomeText">Welcome</p>
+      <div class="topbar-brand">
+        <div class="topbar-mark" data-icon="clipboard-check"></div>
+        <div class="title">
+          <h1>Daily Task Desk</h1>
+          <p id="welcomeText">Welcome</p>
+        </div>
       </div>
       <div class="actions">
+        <button class="btn" id="connectFileBtn" type="button" title="Connect data.json for direct file saving">
+          <span data-icon="link-2"></span>
+          <span id="fileStatusDot" style="width:7px;height:7px;border-radius:50%;background:var(--muted-2);flex-shrink:0"></span>
+          <span id="fileStatusText">Connect file</span>
+        </button>
         <button class="btn" id="backupBtn" type="button"><span data-icon="download"></span>Backup</button>
         <button class="btn" id="restoreBtn" type="button"><span data-icon="upload"></span>Restore</button>
         <button class="btn danger" id="logoutBtn" type="button"><span data-icon="log-out"></span>Logout</button>
@@ -701,10 +985,16 @@
     </header>
 
     <section class="layout">
+      <!-- Left column -->
       <div class="stack">
+
+        <!-- Task list -->
         <section class="panel">
           <div class="panel-header">
-            <h2 class="section-title"><span data-icon="calendar-check"></span><span id="listTitle">Today</span></h2>
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="calendar-check"></span>
+              <span id="listTitle">Today</span>
+            </h2>
             <span class="pill" id="datePill"></span>
           </div>
           <div class="progress-wrap">
@@ -718,29 +1008,47 @@
           <div class="empty" id="emptyState">No tasks for today. Add one from the side panel.</div>
         </section>
 
+        <!-- Summary -->
         <section class="panel">
           <div class="panel-header">
-            <h2 class="section-title"><span data-icon="badge-check"></span>Today summary</h2>
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="badge-check"></span>
+              Today's summary
+            </h2>
           </div>
           <ul class="summary-list" id="summaryList"></ul>
           <div class="empty" id="summaryEmpty">No completed tasks yet today.</div>
         </section>
 
+        <!-- Admin overview -->
         <section class="panel hide" id="adminPanel">
           <div class="panel-header">
-            <h2 class="section-title"><span data-icon="users"></span>Admin overview</h2>
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="users"></span>
+              Team overview
+            </h2>
             <span class="pill" id="adminDatePill"></span>
           </div>
           <ul class="admin-list" id="adminList"></ul>
         </section>
+
       </div>
 
+      <!-- Right sidebar -->
       <aside class="stack">
+
+        <!-- Add task -->
         <section class="panel">
+          <div class="panel-header">
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="plus"></span>
+              Add task
+            </h2>
+          </div>
           <form class="form" id="taskForm">
             <div class="field">
-              <label for="taskTitle">Add task</label>
-              <input id="taskTitle" placeholder="Example: Check client messages" autocomplete="off" required>
+              <label for="taskTitle">Task name</label>
+              <input id="taskTitle" placeholder="e.g. Check client messages" autocomplete="off" required>
             </div>
             <div class="field">
               <label>Task type</label>
@@ -763,27 +1071,41 @@
               <label for="scheduleDate">Scheduled date</label>
               <input id="scheduleDate" type="date">
             </div>
-            <button class="btn primary" id="submitTaskBtn" type="submit"><span data-icon="plus"></span><span>Add daily task</span></button>
+            <div class="field hide" id="assignField">
+              <label for="assignUser">Assign to</label>
+              <select id="assignUser"></select>
+            </div>
+            <button class="btn primary btn-full" id="submitTaskBtn" type="submit">
+              <span data-icon="plus"></span><span>Add daily task</span>
+            </button>
             <p class="status" id="formStatus" aria-live="polite"></p>
           </form>
         </section>
 
+        <!-- Notes -->
         <section class="panel">
           <div class="panel-header">
-            <h2 class="section-title"><span data-icon="notebook-pen"></span>Notes</h2>
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="notebook-pen"></span>
+              Notes
+            </h2>
+            <strong id="noteOwner" style="font-size:.8rem;color:var(--muted);font-weight:600">My note</strong>
           </div>
           <div class="form">
-            <textarea id="noteText" placeholder="Write notes for today's work, reminders, links, or handover points."></textarea>
+            <textarea id="noteText" placeholder="Write notes, reminders, links, or handover points…"></textarea>
           </div>
           <div class="note-footer">
             <span id="noteStatus">Saved automatically</span>
-            <strong id="noteOwner">My note</strong>
           </div>
         </section>
 
+        <!-- Alarm -->
         <section class="panel">
           <div class="panel-header">
-            <h2 class="section-title"><span data-icon="bell"></span>Hourly alarm</h2>
+            <h2 class="section-title">
+              <span class="s-icon" data-icon="bell"></span>
+              Hourly alarm
+            </h2>
           </div>
           <div class="alarm-row">
             <div class="alarm-copy">
@@ -800,585 +1122,11 @@
             <button class="btn" id="testAlarmBtn" type="button"><span data-icon="volume-2"></span>Test</button>
           </div>
         </section>
+
       </aside>
     </section>
   </main>
 
-  <script>
-    const STORE_KEY = "daily-task-desk-v2";
-    const SESSION_KEY = "daily-task-desk-session-v2";
-    const OLD_STORE_KEY = "daily-work-checklist-v1";
-    const DAY_NAMES = { mon: "Monday", tue: "Tuesday", wed: "Wednesday", thu: "Thursday", fri: "Friday", sat: "Saturday" };
-    const DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat"];
-    const DEFAULT_DATA = {
-      users: [
-        { id: "admin", name: "Admin", username: "admin", password: "admin123", role: "admin", createdAt: "2026-06-01T00:00:00.000Z" }
-      ],
-      tasks: [
-        { id: "sample-morning-review", userId: "admin", title: "Morning work review", type: "daily", days: DAY_ORDER, createdAt: "2026-06-01T00:00:00.000Z" }
-      ],
-      completions: {},
-      notes: []
-    };
-
-    const icons = {
-      "badge-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 12 2 2 4-4"/><path d="M3.9 9.6a2 2 0 0 1 0-3.2l1.3-.9.5-1.5a2 2 0 0 1 3-1.1l1.3.8 1.3-.8a2 2 0 0 1 3 1.1l.5 1.5 1.3.9a2 2 0 0 1 0 3.2l-.9.6.9.6a2 2 0 0 1 0 3.2l-1.3.9-.5 1.5a2 2 0 0 1-3 1.1l-1.3-.8-1.3.8a2 2 0 0 1-3-1.1l-.5-1.5-1.3-.9a2 2 0 0 1 0-3.2l.9-.6-.9-.6Z"/></svg>',
-      bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.3 21a2 2 0 0 0 3.4 0"/><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/></svg>',
-      "calendar-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/></svg>',
-      "clipboard-check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>',
-      download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>',
-      "log-in": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg>',
-      "log-out": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>',
-      "notebook-pen": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4M2 10h4M2 14h4M2 18h4"/><path d="M18.4 2.6a2.1 2.1 0 0 1 3 3L14 13l-4 1 1-4Z"/></svg>',
-      plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14M12 5v14"/></svg>',
-      trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>',
-      upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg>',
-      "user-plus": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>',
-      users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
-      "volume-2": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 5 6 9H2v6h4l5 4Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',
-      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 5 5L20 7"/></svg>'
-    };
-
-    const state = { data: cloneData(DEFAULT_DATA), today: new Date(), currentUserId: null, authMode: "login", alarmTimer: null, audioContext: null };
-    const $ = (selector) => document.querySelector(selector);
-    const elements = {
-      authView: $("#authView"), appView: $("#appView"), loginTab: $("#loginTab"), registerTab: $("#registerTab"),
-      loginForm: $("#loginForm"), registerForm: $("#registerForm"), loginUsername: $("#loginUsername"), loginPassword: $("#loginPassword"),
-      registerName: $("#registerName"), registerUsername: $("#registerUsername"), registerPassword: $("#registerPassword"),
-      loginStatus: $("#loginStatus"), registerStatus: $("#registerStatus"), authUserCount: $("#authUserCount"), authTaskCount: $("#authTaskCount"),
-      welcomeText: $("#welcomeText"), listTitle: $("#listTitle"), datePill: $("#datePill"), progressText: $("#progressText"),
-      progressPercent: $("#progressPercent"), progressBar: $("#progressBar"), taskList: $("#taskList"), emptyState: $("#emptyState"),
-      summaryList: $("#summaryList"), summaryEmpty: $("#summaryEmpty"), adminPanel: $("#adminPanel"), adminDatePill: $("#adminDatePill"),
-      adminList: $("#adminList"), taskForm: $("#taskForm"), taskTitle: $("#taskTitle"), dayChoices: $("#dayChoices"), repeatField: $("#repeatField"),
-      scheduleField: $("#scheduleField"), scheduleDate: $("#scheduleDate"), submitTaskBtn: $("#submitTaskBtn"), formStatus: $("#formStatus"),
-      noteText: $("#noteText"), noteStatus: $("#noteStatus"), noteOwner: $("#noteOwner"), backupBtn: $("#backupBtn"), restoreBtn: $("#restoreBtn"),
-      restoreFile: $("#restoreFile"), logoutBtn: $("#logoutBtn"), alarmToggle: $("#alarmToggle"), alarmTitle: $("#alarmTitle"),
-      alarmDescription: $("#alarmDescription"), alarmStatus: $("#alarmStatus"), testAlarmBtn: $("#testAlarmBtn")
-    };
-
-    function cloneData(data) { return JSON.parse(JSON.stringify(data)); }
-    function todayKey() {
-      const year = state.today.getFullYear();
-      const month = String(state.today.getMonth() + 1).padStart(2, "0");
-      const day = String(state.today.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-    function currentDayKey() { return [null, "mon", "tue", "wed", "thu", "fri", "sat"][state.today.getDay()] || "sun"; }
-    function currentUser() { return state.data.users.find((user) => user.id === state.currentUserId); }
-    function isAdmin() { return currentUser()?.role === "admin"; }
-    function saveData() { localStorage.setItem(STORE_KEY, JSON.stringify(state.data)); }
-    function saveSession() { localStorage.setItem(SESSION_KEY, state.currentUserId || ""); }
-    function showStatus(element, message, isError = false) {
-      element.textContent = message;
-      element.style.color = isError ? "var(--red)" : "var(--green)";
-      window.clearTimeout(element.timer);
-      element.timer = window.setTimeout(() => { element.textContent = ""; }, 2600);
-    }
-
-    async function loadData() {
-      const saved = localStorage.getItem(STORE_KEY);
-      if (saved) {
-        try { return normalizeData(JSON.parse(saved)); } catch (error) { return cloneData(DEFAULT_DATA); }
-      }
-
-      const oldSaved = localStorage.getItem(OLD_STORE_KEY);
-      if (oldSaved) {
-        try { return migrateOldData(JSON.parse(oldSaved)); } catch (error) { return cloneData(DEFAULT_DATA); }
-      }
-
-      try {
-        const response = await fetch("data.json", { cache: "no-store" });
-        if (!response.ok) throw new Error("Seed file not available");
-        return normalizeData(await response.json());
-      } catch (error) {
-        return cloneData(DEFAULT_DATA);
-      }
-    }
-
-    function migrateOldData(oldData) {
-      const migrated = cloneData(DEFAULT_DATA);
-      migrated.tasks = Array.isArray(oldData.tasks) ? oldData.tasks.map((task) => normalizeTask({ ...task, userId: "admin" })) : migrated.tasks;
-      migrated.completions = {};
-      Object.entries(oldData.completions || {}).forEach(([date, ids]) => { migrated.completions[date] = { admin: Array.isArray(ids) ? ids : [] }; });
-      return normalizeData(migrated);
-    }
-
-    function normalizeData(data) {
-      const users = Array.isArray(data.users) ? data.users.filter((user) => user.username && user.password).map((user) => ({
-        id: user.id || `user-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-        name: user.name || user.username,
-        username: user.username,
-        password: user.password,
-        role: user.role === "admin" ? "admin" : "user",
-        alarmEnabled: Boolean(user.alarmEnabled),
-        nextAlarmAt: user.nextAlarmAt || "",
-        createdAt: user.createdAt || new Date().toISOString()
-      })) : cloneData(DEFAULT_DATA.users);
-
-      if (!users.some((user) => user.role === "admin")) users.unshift(cloneData(DEFAULT_DATA.users[0]));
-      const validUserIds = new Set(users.map((user) => user.id));
-      const tasks = Array.isArray(data.tasks) ? data.tasks.filter((task) => task?.title).map((task) => normalizeTask(task)).filter((task) => validUserIds.has(task.userId)) : [];
-      const notes = Array.isArray(data.notes) ? data.notes.filter((note) => validUserIds.has(note.userId)) : [];
-      return { users, tasks, completions: normalizeCompletions(data.completions, validUserIds), notes };
-    }
-
-    function normalizeCompletions(completions, validUserIds) {
-      const clean = {};
-      Object.entries(completions || {}).forEach(([date, value]) => {
-        if (Array.isArray(value)) {
-          clean[date] = { admin: value };
-          return;
-        }
-
-        clean[date] = {};
-        Object.entries(value || {}).forEach(([userId, ids]) => {
-          if (validUserIds.has(userId)) clean[date][userId] = Array.isArray(ids) ? ids : [];
-        });
-      });
-      return clean;
-    }
-
-    function normalizeTask(task) {
-      const base = {
-        id: task.id || `task-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-        userId: task.userId || "admin",
-        title: task.title,
-        createdAt: task.createdAt || new Date().toISOString()
-      };
-
-      if (task.type === "scheduled") return { ...base, type: "scheduled", days: [], scheduleDate: task.scheduleDate || todayKey() };
-      return { ...base, type: "daily", days: Array.isArray(task.days) ? task.days.filter((day) => DAY_ORDER.includes(day)) : DAY_ORDER };
-    }
-
-    function renderIcons(root = document) {
-      root.querySelectorAll("[data-icon]").forEach((node) => { node.innerHTML = icons[node.dataset.icon] || ""; });
-    }
-
-    function renderAuthStats() {
-      elements.authUserCount.textContent = state.data.users.length;
-      elements.authTaskCount.textContent = state.data.tasks.length;
-    }
-
-    function setAuthMode(mode) {
-      state.authMode = mode;
-      elements.loginTab.classList.toggle("active", mode === "login");
-      elements.registerTab.classList.toggle("active", mode === "register");
-      elements.loginForm.classList.toggle("hide", mode !== "login");
-      elements.registerForm.classList.toggle("hide", mode !== "register");
-    }
-
-    function login(event) {
-      event.preventDefault();
-      const username = elements.loginUsername.value.trim().toLowerCase();
-      const password = elements.loginPassword.value;
-      const user = state.data.users.find((item) => item.username.toLowerCase() === username && item.password === password);
-      if (!user) {
-        showStatus(elements.loginStatus, "Invalid username or password.", true);
-        return;
-      }
-
-      state.currentUserId = user.id;
-      saveSession();
-      elements.loginForm.reset();
-      renderApp();
-    }
-
-    function register(event) {
-      event.preventDefault();
-      const name = elements.registerName.value.trim();
-      const username = elements.registerUsername.value.trim();
-      const password = elements.registerPassword.value;
-
-      if (username.length < 3 || password.length < 4) {
-        showStatus(elements.registerStatus, "Use 3+ username letters and 4+ password letters.", true);
-        return;
-      }
-
-      if (state.data.users.some((user) => user.username.toLowerCase() === username.toLowerCase())) {
-        showStatus(elements.registerStatus, "Username already exists.", true);
-        return;
-      }
-
-      const user = { id: `user-${Date.now()}-${Math.random().toString(16).slice(2)}`, name: name || username, username, password, role: "user", alarmEnabled: false, nextAlarmAt: "", createdAt: new Date().toISOString() };
-      state.data.users.push(user);
-      saveData();
-      renderAuthStats();
-      elements.registerForm.reset();
-      showStatus(elements.registerStatus, "User created. You can login now.");
-      setAuthMode("login");
-      elements.loginUsername.value = username;
-      elements.loginPassword.focus();
-    }
-
-    function logout() {
-      stopAlarmTimer();
-      state.currentUserId = null;
-      localStorage.removeItem(SESSION_KEY);
-      elements.appView.classList.add("hide");
-      elements.authView.classList.remove("hide");
-      renderAuthStats();
-    }
-
-    function renderDayChoices() {
-      elements.dayChoices.innerHTML = "";
-      DAY_ORDER.forEach((day) => {
-        const label = document.createElement("label");
-        label.className = "choice";
-        label.innerHTML = `<input type="checkbox" name="days" value="${day}" checked><span>${day.toUpperCase()}</span>`;
-        elements.dayChoices.appendChild(label);
-      });
-    }
-
-    function setDefaultScheduleDate() { elements.scheduleDate.value = todayKey(); }
-    function getTaskType() { return elements.taskForm.querySelector("input[name='taskType']:checked").value; }
-    function renderTaskTypeControls() {
-      const isScheduled = getTaskType() === "scheduled";
-      elements.repeatField.classList.toggle("hide", isScheduled);
-      elements.scheduleField.classList.toggle("hide", !isScheduled);
-      elements.submitTaskBtn.querySelector("span:last-child").textContent = isScheduled ? "Add scheduled task" : "Add daily task";
-      if (isScheduled && !elements.scheduleDate.value) setDefaultScheduleDate();
-    }
-
-    function getTasksForUserOnDate(userId, dayKey, dateKey) {
-      return state.data.tasks.filter((task) => task.userId === userId && (task.type === "scheduled" ? task.scheduleDate === dateKey : task.days.includes(dayKey)));
-    }
-
-    function getDoneSet(userId, dateKey) {
-      return new Set(state.data.completions[dateKey]?.[userId] || []);
-    }
-
-    function getTaskMeta(task) {
-      if (task.type === "scheduled") return `Scheduled: ${task.scheduleDate}`;
-      return task.days.map((day) => DAY_NAMES[day].slice(0, 3)).join(", ");
-    }
-
-    function formatDate() {
-      return state.today.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric", year: "numeric" });
-    }
-
-    function renderApp() {
-      const user = currentUser();
-      if (!user) return logout();
-
-      elements.authView.classList.add("hide");
-      elements.appView.classList.remove("hide");
-      elements.welcomeText.textContent = `${user.name} • ${user.role === "admin" ? "Admin" : "User"}`;
-      elements.noteOwner.textContent = user.role === "admin" ? "Admin note" : "My note";
-      renderTasks();
-      renderNotes();
-      renderAlarm();
-      renderAdmin();
-    }
-
-    function renderTasks() {
-      const user = currentUser();
-      const dateKey = todayKey();
-      const dayKey = currentDayKey();
-      const todayTasks = getTasksForUserOnDate(user.id, dayKey, dateKey);
-      const doneSet = getDoneSet(user.id, dateKey);
-      const doneCount = todayTasks.filter((task) => doneSet.has(task.id)).length;
-      const percent = todayTasks.length ? Math.round((doneCount / todayTasks.length) * 100) : 0;
-
-      elements.listTitle.textContent = dayKey === "sun" ? "Sunday scheduled work" : `${DAY_NAMES[dayKey]} work`;
-      elements.datePill.textContent = formatDate();
-      elements.progressText.textContent = `${doneCount} of ${todayTasks.length} done`;
-      elements.progressPercent.textContent = `${percent}%`;
-      elements.progressBar.style.width = `${percent}%`;
-      elements.emptyState.hidden = todayTasks.length > 0;
-      elements.taskList.innerHTML = "";
-      elements.summaryList.innerHTML = "";
-
-      todayTasks.forEach((task) => {
-        const item = document.createElement("li");
-        item.className = `task${doneSet.has(task.id) ? " done" : ""}`;
-        item.innerHTML = `
-          <button class="check" type="button" aria-label="Toggle done">${icons.check}</button>
-          <div><div class="task-title"></div><div class="task-meta"></div></div>
-          <button class="icon-btn" type="button" title="Delete task" aria-label="Delete task">${icons.trash}</button>
-        `;
-        item.querySelector(".task-title").textContent = task.title;
-        item.querySelector(".task-meta").textContent = getTaskMeta(task);
-        item.querySelector(".check").addEventListener("click", () => toggleDone(task.id));
-        item.querySelector(".icon-btn").addEventListener("click", () => deleteTask(task.id));
-        elements.taskList.appendChild(item);
-      });
-
-      const completedTasks = todayTasks.filter((task) => doneSet.has(task.id));
-      elements.summaryEmpty.hidden = completedTasks.length > 0;
-      completedTasks.forEach((task) => {
-        const item = document.createElement("li");
-        item.innerHTML = `<span class="tick">${icons.check}</span><span></span>`;
-        item.querySelector("span:last-child").textContent = task.title;
-        elements.summaryList.appendChild(item);
-      });
-    }
-
-    function toggleDone(taskId) {
-      const user = currentUser();
-      const dateKey = todayKey();
-      state.data.completions[dateKey] ||= {};
-      const done = getDoneSet(user.id, dateKey);
-      done.has(taskId) ? done.delete(taskId) : done.add(taskId);
-      state.data.completions[dateKey][user.id] = Array.from(done);
-      saveData();
-      renderTasks();
-      renderAdmin();
-    }
-
-    function deleteTask(taskId) {
-      const user = currentUser();
-      const task = state.data.tasks.find((item) => item.id === taskId && item.userId === user.id);
-      if (!task || !confirm(`Delete "${task.title}"?`)) return;
-
-      state.data.tasks = state.data.tasks.filter((item) => item.id !== taskId);
-      Object.values(state.data.completions).forEach((byUser) => {
-        Object.keys(byUser).forEach((userId) => { byUser[userId] = byUser[userId].filter((id) => id !== taskId); });
-      });
-      saveData();
-      renderTasks();
-      renderAdmin();
-    }
-
-    function addTask(event) {
-      event.preventDefault();
-      const user = currentUser();
-      const title = elements.taskTitle.value.trim();
-      const taskType = getTaskType();
-      const days = Array.from(elements.taskForm.querySelectorAll("input[name='days']:checked")).map((input) => input.value);
-      const scheduleDate = elements.scheduleDate.value;
-
-      if (!title) {
-        showStatus(elements.formStatus, "Please enter a task name.", true);
-        elements.taskTitle.focus();
-        return;
-      }
-
-      if (taskType === "daily" && days.length === 0) {
-        showStatus(elements.formStatus, "Please choose at least one day.", true);
-        return;
-      }
-
-      if (taskType === "scheduled" && !scheduleDate) {
-        showStatus(elements.formStatus, "Please choose a scheduled date.", true);
-        return;
-      }
-
-      const task = { id: `task-${Date.now()}-${Math.random().toString(16).slice(2)}`, userId: user.id, title, type: taskType, days: taskType === "daily" ? days : [], scheduleDate: taskType === "scheduled" ? scheduleDate : undefined, createdAt: new Date().toISOString() };
-      state.data.tasks.push(task);
-      elements.taskForm.reset();
-      elements.taskForm.querySelector("input[name='taskType'][value='daily']").checked = true;
-      elements.taskForm.querySelectorAll("input[name='days']").forEach((input) => { input.checked = true; });
-      setDefaultScheduleDate();
-      renderTaskTypeControls();
-      saveData();
-      renderTasks();
-      renderAdmin();
-      showStatus(elements.formStatus, taskType === "scheduled" ? "Scheduled task added." : "Task added.");
-    }
-
-    function getNoteForUser(userId) {
-      let note = state.data.notes.find((item) => item.userId === userId);
-      if (!note) {
-        note = { id: `note-${userId}`, userId, text: "", updatedAt: "" };
-        state.data.notes.push(note);
-      }
-      return note;
-    }
-
-    function renderNotes() {
-      const note = getNoteForUser(currentUser().id);
-      elements.noteText.value = note.text;
-      elements.noteStatus.textContent = note.updatedAt ? `Saved ${new Date(note.updatedAt).toLocaleString()}` : "Saved automatically";
-    }
-
-    function saveNote() {
-      const note = getNoteForUser(currentUser().id);
-      note.text = elements.noteText.value;
-      note.updatedAt = new Date().toISOString();
-      saveData();
-      elements.noteStatus.textContent = "Saved";
-      window.clearTimeout(saveNote.timer);
-      saveNote.timer = window.setTimeout(() => { elements.noteStatus.textContent = `Saved ${new Date(note.updatedAt).toLocaleString()}`; }, 700);
-      renderAdmin();
-    }
-
-    function renderAlarm() {
-      const user = currentUser();
-      const enabled = Boolean(user.alarmEnabled);
-      elements.alarmToggle.checked = enabled;
-      elements.alarmTitle.textContent = enabled ? "Alarm is on" : "Alarm is off";
-      elements.alarmDescription.textContent = enabled
-        ? "A reminder will play every hour while this page stays open."
-        : "Turn it on to play a reminder every hour while this page is open.";
-      elements.alarmStatus.textContent = enabled && user.nextAlarmAt
-        ? `Next alarm: ${new Date(user.nextAlarmAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-        : "No alarm scheduled";
-
-      enabled ? startAlarmTimer() : stopAlarmTimer();
-    }
-
-    function toggleAlarm() {
-      const user = currentUser();
-      user.alarmEnabled = elements.alarmToggle.checked;
-      user.nextAlarmAt = user.alarmEnabled ? new Date(Date.now() + 60 * 60 * 1000).toISOString() : "";
-      saveData();
-      renderAlarm();
-      if (user.alarmEnabled) playAlarm("Hourly alarm enabled.");
-    }
-
-    function startAlarmTimer() {
-      stopAlarmTimer();
-      const user = currentUser();
-      if (!user?.alarmEnabled) return;
-
-      let nextAlarm = user.nextAlarmAt ? new Date(user.nextAlarmAt).getTime() : 0;
-      if (!nextAlarm || Number.isNaN(nextAlarm) || nextAlarm <= Date.now()) {
-        nextAlarm = Date.now() + 60 * 60 * 1000;
-        user.nextAlarmAt = new Date(nextAlarm).toISOString();
-        saveData();
-      }
-
-      const delay = Math.max(1000, Math.min(nextAlarm - Date.now(), 2147483647));
-      state.alarmTimer = window.setTimeout(() => {
-        playAlarm("Hourly work reminder.");
-        const activeUser = currentUser();
-        if (!activeUser?.alarmEnabled) return;
-        activeUser.nextAlarmAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-        saveData();
-        renderAlarm();
-      }, delay);
-    }
-
-    function stopAlarmTimer() {
-      if (state.alarmTimer) {
-        window.clearTimeout(state.alarmTimer);
-        state.alarmTimer = null;
-      }
-    }
-
-    function playAlarm(message = "Hourly work reminder.") {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) {
-        alert(message);
-        return;
-      }
-
-      state.audioContext ||= new AudioContext();
-      if (state.audioContext.state === "suspended") state.audioContext.resume();
-
-      const start = state.audioContext.currentTime;
-      [0, 0.28, 0.56].forEach((offset) => {
-        const oscillator = state.audioContext.createOscillator();
-        const gain = state.audioContext.createGain();
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(880, start + offset);
-        oscillator.frequency.setValueAtTime(660, start + offset + 0.12);
-        gain.gain.setValueAtTime(0.0001, start + offset);
-        gain.gain.exponentialRampToValueAtTime(0.22, start + offset + 0.03);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + offset + 0.22);
-        oscillator.connect(gain);
-        gain.connect(state.audioContext.destination);
-        oscillator.start(start + offset);
-        oscillator.stop(start + offset + 0.24);
-      });
-    }
-
-    function renderAdmin() {
-      elements.adminPanel.classList.toggle("hide", !isAdmin());
-      if (!isAdmin()) return;
-
-      const dateKey = todayKey();
-      const dayKey = currentDayKey();
-      elements.adminDatePill.textContent = formatDate();
-      elements.adminList.innerHTML = "";
-
-      state.data.users.forEach((user) => {
-        const tasks = getTasksForUserOnDate(user.id, dayKey, dateKey);
-        const doneSet = getDoneSet(user.id, dateKey);
-        const doneTasks = tasks.filter((task) => doneSet.has(task.id));
-        const note = state.data.notes.find((item) => item.userId === user.id);
-        const item = document.createElement("li");
-        item.className = "admin-item";
-        item.innerHTML = `
-          <div class="admin-row">
-            <div>
-              <div class="admin-name"></div>
-              <div class="admin-meta"></div>
-            </div>
-            <span class="pill"></span>
-          </div>
-          <div class="admin-note hide"></div>
-        `;
-        item.querySelector(".admin-name").textContent = `${user.name} (${user.username})`;
-        item.querySelector(".admin-meta").textContent = doneTasks.length ? `Done: ${doneTasks.map((task) => task.title).join(", ")}` : "No completed tasks today";
-        item.querySelector(".pill").textContent = `${doneTasks.length}/${tasks.length}`;
-        if (note?.text?.trim()) {
-          item.querySelector(".admin-note").classList.remove("hide");
-          item.querySelector(".admin-note").textContent = note.text;
-        }
-        elements.adminList.appendChild(item);
-      });
-    }
-
-    function downloadBackup() {
-      const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `daily-task-backup-${todayKey()}.json`;
-      link.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function restoreBackup(file) {
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          state.data = normalizeData(JSON.parse(reader.result));
-          if (!state.data.users.some((user) => user.id === state.currentUserId)) state.currentUserId = null;
-          saveData();
-          saveSession();
-          renderAuthStats();
-          state.currentUserId ? renderApp() : logout();
-          alert("Backup restored.");
-        } catch (error) {
-          alert("This backup file is not valid JSON.");
-        }
-      };
-      reader.readAsText(file);
-      elements.restoreFile.value = "";
-    }
-
-    async function init() {
-      state.data = await loadData();
-      saveData();
-      state.currentUserId = localStorage.getItem(SESSION_KEY);
-      if (!state.data.users.some((user) => user.id === state.currentUserId)) state.currentUserId = null;
-
-      renderIcons();
-      renderDayChoices();
-      setDefaultScheduleDate();
-      renderTaskTypeControls();
-      renderAuthStats();
-      state.currentUserId ? renderApp() : logout();
-
-      elements.loginTab.addEventListener("click", () => setAuthMode("login"));
-      elements.registerTab.addEventListener("click", () => setAuthMode("register"));
-      elements.loginForm.addEventListener("submit", login);
-      elements.registerForm.addEventListener("submit", register);
-      elements.taskForm.addEventListener("submit", addTask);
-      elements.taskForm.querySelectorAll("input[name='taskType']").forEach((input) => input.addEventListener("change", renderTaskTypeControls));
-      elements.noteText.addEventListener("input", saveNote);
-      elements.alarmToggle.addEventListener("change", toggleAlarm);
-      elements.testAlarmBtn.addEventListener("click", () => playAlarm("Test alarm."));
-      elements.backupBtn.addEventListener("click", downloadBackup);
-      elements.restoreBtn.addEventListener("click", () => elements.restoreFile.click());
-      elements.restoreFile.addEventListener("change", (event) => restoreBackup(event.target.files[0]));
-      elements.logoutBtn.addEventListener("click", logout);
-    }
-
-    init();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
