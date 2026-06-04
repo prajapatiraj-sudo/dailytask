@@ -389,6 +389,7 @@
     /* ── Progress ─────────────────────────────────────── */
     .progress-wrap {
       padding: 14px 20px 16px;
+      border-bottom: 1px solid var(--line);
     }
 
     .progress-meta {
@@ -426,7 +427,7 @@
     .task-list, .summary-list, .admin-list {
       list-style: none;
       margin: 0;
-      padding: 6px 8px;
+      padding: 8px 10px;
     }
 
     .task {
@@ -435,18 +436,16 @@
       gap: 12px;
       align-items: center;
       border-radius: var(--r-sm);
-      padding: 10px 10px 10px 0;
-      min-height: 58px;
+      padding: 11px 10px 11px 10px;
+      min-height: 60px;
       border-left: 3px solid transparent;
-      padding-left: 8px;
       transition: background var(--transition), border-color var(--transition);
-      cursor: default;
     }
 
-    .task:hover { background: var(--surface-2); border-left-color: var(--line-2); }
-    .task + .task { border-top: 1px solid var(--surface-3); }
-    .task.done { border-left-color: var(--green); }
-    .task.done:hover { border-left-color: var(--green); }
+    .task:hover { background: var(--surface-3); border-left-color: var(--blue-mid); }
+    .task + .task { border-top: 1px solid var(--line); }
+    .task.done { border-left-color: var(--green); background: var(--green-soft); }
+    .task.done:hover { border-left-color: var(--green); background: #e5faf0; }
 
     .check {
       width: 32px;
@@ -517,15 +516,16 @@
       display: grid;
       grid-template-columns: 24px minmax(0,1fr);
       gap: 12px;
-      align-items: start;
-      padding: 9px 10px;
-      font-size: 0.87rem;
+      align-items: center;
+      padding: 10px 8px;
+      font-size: 0.88rem;
       font-weight: 600;
       overflow-wrap: anywhere;
       border-radius: var(--r-xs);
+      color: var(--ink-2);
     }
 
-    .summary-list li + li { border-top: 1px solid var(--surface-3); }
+    .summary-list li + li { border-top: 1px solid var(--line); }
 
     .tick {
       width: 22px;
@@ -555,6 +555,15 @@
       color: var(--ink-2);
       letter-spacing: 0.01em;
       text-transform: uppercase;
+      user-select: none;
+    }
+
+    /* reset uppercase on interactive choice labels so button text reads normally */
+    label.choice {
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: inherit;
+      color: inherit;
     }
 
     input, textarea, select {
@@ -753,11 +762,18 @@
     }
 
     /* ── Admin ─────────────────────────────────────────── */
-    .admin-item {
-      padding: 16px 14px;
+    .admin-list {
+      display: grid;
+      gap: 10px;
+      padding: 12px !important;
     }
 
-    .admin-item + .admin-item { border-top: 1px solid var(--surface-3); }
+    .admin-item {
+      padding: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+    }
 
     .admin-row {
       display: flex;
